@@ -1,8 +1,9 @@
-$( document ).ready(function() {
   let  items = [];
   let  itemsRaw = [];
+  const display = document.getElementById("display");
   
-  $.getJSON('/api/books', function(data) {
+  fetch('/api/books').then(res => res.json())
+  .then((data) => {
     //let  items = [];
     itemsRaw = data;
     $.each(data, function(i, val) {
@@ -16,46 +17,59 @@ $( document ).ready(function() {
       'class': 'listWrapper',
       html: items.join('')
       }).appendTo('#display');
-  });
+  }).catch(err => console.error(err));
   
   let  comments = [];
-  $('#display').on('click','li.bookItem',function() {
-    $("#detailTitle").html('<b>'+itemsRaw[this.id].title+'</b> (id: '+itemsRaw[this.id]._id+')');
-    $.getJSON('/api/books/'+itemsRaw[this.id]._id, function(data) {
-      comments = [];
-      $.each(data.comments, function(i, val) {
-        comments.push('<li>' +val+ '</li>');
-      });
-      comments.push('<br><form id="newCommentForm"><input style="width:300px" type="text" class="form-control" id="commentToAdd" name="comment" placeholder="New Comment"></form>');
-      comments.push('<br><button class="btn btn-info addComment" id="'+ data._id+'">Add Comment</button>');
-      comments.push('<button class="btn btn-danger deleteBook" id="'+ data._id+'">Delete Book</button>');
-      $('#detailComments').html(comments.join(''));
-    });
+  const detailTitle = document.getElementById("detailTitle");
+  const detailComments = document.getElementById("detailComments");
+
+  display.addEventListener('click', function(e) {
+    if(e.target.classList.contains("bookItem")){
+      
+      detailTitle.innerHTML = `<b>${itemsRaw[e.target.id].title} </b> id: ${itemsRaw[e.target.id]._id}`;
+      fetch('/api/books/'+itemsRaw[e.target.id]._id).then(res => res.json())
+      .then(data => {
+        comments = [];
+        data.comments.forEach((val) => {
+          comments.push('<li>' +val+ '</li>');
+        });
+        comments.push('<br><form id="newCommentForm"><input style="width:300px" type="text" class="form-control" id="commentToAdd" name="comment" placeholder="New Comment"></form>');
+        comments.push(`<br><button class="btn btn-info addComment" id="${data._id}">Add Comment</button>`);
+        comments.push(`<button class="btn btn-danger deleteBook" id="${data._id}">Delete Book</button>`);
+        detailComments.innerHTML = comments.join('');
+      }).catch(err => console.error(err));
+    }
   });
   
-  $('#bookDetail').on('click','button.deleteBook',function() {
-    $.ajax({
-      url: '/api/books/'+this.id,
-      type: 'delete',
-      success: function(data) {
-        //update list
-        $('#detailComments').html('<p style="color: red;">'+data+'<p><p>Refresh the page</p>');
-      }
-    });
+  const bookDetail = document.getElementById('bookDetail');
+  bookDetail.addEventListener('click', e => {
+    if(e.target.classList.contains("deleteBook")){
+      const url = `/api/books/${e.target.id}`;
+
+      fetch(url, {method: "delete"})
+      .then(res => res.json())
+      .then(data => {
+        detailComments.innerHTML = `<p style="color: red;">${data.result}<p><p>Refresh the page</p>`;
+      }).catch(err => console.error(err));
+    }
   });  
   
-  $('#bookDetail').on('click','button.addComment',function() {
-    let  newComment = $('#commentToAdd').val();
-    $.ajax({
-      url: '/api/books/'+this.id,
-      type: 'post',
-      dataType: 'json',
-      data: $('#newCommentForm').serialize(),
-      success: function(data) {
-        comments.unshift(newComment); //adds new comment to top of list
-        $('#detailComments').html(comments.join(''));
-      }
-    });
+  bookDetail.addEventListener('click', e => {
+    if(e.target.classList.contains("addComment")){
+
+      let  newComment = document.querySelector('#commentToAdd').value;
+      const url = `/api/books/${e.target.id}`;
+
+      fetch(url, {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({comment: newComment})
+      }).then(res => res.json())
+      .then(data => {
+        comments.unshift(newComment);
+        detailComments.innerHTML = comments.join("");
+      }).catch(err => console.error(err));
+    }
   });
   
   $('#newBook').click(function() {
@@ -82,4 +96,3 @@ $( document ).ready(function() {
     });
   }); 
   
-});

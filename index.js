@@ -1,23 +1,26 @@
 'use strict';
 
 const express     = require('express');
-const bodyParser  = require('body-parser');
+// const bodyParser  = require('body-parser');
 const cors        = require('cors');
 require('dotenv').config();
 
-const apiRoutes         = require('./routes/api.js');
+// const apiRoutes         = require('./routes/api.js');
+const booksRouter = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
-
+const connectdb = require('./db/connection.js');
 const app = express();
 
+app.set("view engine", "ejs");
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({origin: '*'})); //USED FOR FCC TESTING PURPOSES ONLY!
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
+connectdb();
 //Index page (static HTML)
 app.route('/')
   .get(function (req, res) {
@@ -27,8 +30,7 @@ app.route('/')
 //For FCC testing purposes
 fccTestingRoutes(app);
 
-//Routing for API 
-apiRoutes(app);  
+app.use("/api/books", booksRouter);
     
 //404 Not Found Middleware
 app.use(function(req, res, next) {
