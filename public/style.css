@@ -1,34 +1,99 @@
-.border {
-  border-style: solid;
-  border-width: 1px;
-  margin: 10px;
+:root{
+  --purple1: #231942;
+  --purple2: #5e548e;
+  --purple3: #9f86c0;
+  --purple4: #be95c4;
+  --purple5: #e0b1cb;
+}
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body{
+  background-color: var(--purple1);
+  color: var(--purple5);
+  font-family: "Raleway", sans-serif;
+  padding: 3%;
+}
+main{
+  display: flex;
+  gap: 3rem;
+}
+section{
+  flex-grow: 1;
+}
+h1{
+  margin-bottom: 1.5rem;
+}
+h2{
+  margin-bottom: 1rem;
+}
+form{
+  border-radius: 10px;
+  background-color: var(--purple2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  max-width: 600px;
 }
 
-#sampleui {
-  max-width: 450px;
-  margin-left: 5%;
-  height: 100%;
-}
-
-#sampleposting {
-  max-width: 450px;
-  text-align: center;
-  margin-left: 5%;
-}
-
-#userstories {
-  margin-left: 5%;
-}
-
-form {
-  padding: 5px;
-}
-
-label {
-  display: block;
+.btn, input[type="submit"]{
+  max-width: 200px;
+  padding: 5px 15px;
+  border-radius: 369px;
+  background-color: var(--purple4);
+  color: var(--purple1);
+  border: none;
+  outline: none;
+  font-family: "Raleway", sans-serif;
+  font-size: 1rem;
   font-weight: bold;
 }
+input[type="text"]{
+  padding: 5px 15px;
+  border: none;
+  outline: none;
+  font-family: "Raleway", sans-serif;
+  border-radius: 5px;
+}
+#display{
+  background-color: var(--purple2);
+  max-width: 600px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+.listWrapper, #detailComments{
+  list-style: none;
+}
+.listWrapper > li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--purple5);
+}
+.listWrapper > li:last-child{
+  border-bottom: none;
+}
 
-input {
-  margin-bottom: 5px;
+#bookDetail{
+  padding: 1rem;
+  max-width: 600px;
+  border-radius: 10px;
+  background-color: var(--purple4);
+  color: var(--purple1);
+  margin-bottom: 1rem;
+}
+#bookDetail .btn{
+  background-color: var(--purple1);
+  color: var(--purple4);
+}
+#detailTitle{
+  margin-bottom: 0.8rem;
+}
+#detailComments > li{
+  padding: 0.5rem;
+  border-top: 1px solid var(--purple2);
+
 }
