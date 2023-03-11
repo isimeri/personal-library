@@ -36,7 +36,7 @@
         data.comments.forEach((val) => {
           comments.push('<li>' +val+ '</li>');
         });
-        comments.push('<br><form id="newCommentForm"><input style="width:300px" type="text" class="form-control" id="commentToAdd" name="comment" placeholder="New Comment"></form>');
+        comments.push('<br><form id="newCommentForm"><input type="text" class="form-control" id="commentToAdd" name="comment" placeholder="New Comment"></form>');
         comments.push(`<br><button class="btn btn-info addComment" id="${data._id}">Add Comment</button>`);
         comments.push(`<button class="btn btn-danger deleteBook" id="${data._id}" data-order="${e.target.id}">Delete Book</button>`);
         detailComments.innerHTML = comments.join('');
@@ -60,7 +60,7 @@
         }
         // itemsRaw.splice(e.target.id, 1);       //id la carti nu se upd, dar ne trebuie id pt indexare items. poate ar fi mai bine de facut items ca obj
         bookList.innerHTML = items.reduce((acc, curr) => { return acc+=curr.val; }, "");
-        detailComments.innerHTML = `<p style="color: red;">${data}<p><p>Refresh the page</p>`;
+        detailComments.innerHTML = `<p>${data}<p><p>Refresh the page</p>`;
       }).catch(err => console.error(err));
     }
   });  

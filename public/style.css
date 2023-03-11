@@ -51,6 +51,11 @@ form{
   font-family: "Raleway", sans-serif;
   font-size: 1rem;
   font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+}
+.btn:hover, input[type='submit']:hover{
+  background-color: var(--purple5);
+  cursor: pointer;
 }
 input[type="text"]{
   padding: 5px 15px;
@@ -58,6 +63,9 @@ input[type="text"]{
   outline: none;
   font-family: "Raleway", sans-serif;
   border-radius: 5px;
+}
+input[type="text"]:focus{
+  outline: 2px solid var(--purple1);
 }
 #display{
   background-color: var(--purple2);
@@ -89,6 +97,10 @@ input[type="text"]{
   background-color: var(--purple1);
   color: var(--purple4);
 }
+#bookDetail .btn:hover{
+  background-color: var(--purple2);
+  cursor: pointer;
+}
 #detailTitle{
   margin-bottom: 0.8rem;
 }
@@ -96,4 +108,23 @@ input[type="text"]{
   padding: 0.5rem;
   border-top: 1px solid var(--purple2);
 
+}
+
+@media(max-width: 900px){
+  main{
+    flex-direction: column;
+    gap: 2rem;
+  }
+  section{
+    max-width: 600px;
+    margin: 0 auto;
+    align-items: center;
+    width: 100%;
+  }
+  form, #display, #bookDetail{
+    margin: 0 auto 1rem auto;
+  }
+  h1, h2{
+    text-align: center;
+  }
 }
